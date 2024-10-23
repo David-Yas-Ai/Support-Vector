@@ -1,0 +1,21 @@
+# Define the model pipeline with normalization and SVR
+pipeline = make_pipeline(StandardScaler(), SVR(kernel='rbf', C=1.0, epsilon=0.1))
+ 
+# Train the model using the training data
+pipeline.fit(training_data[['x1','x2','x3','x4','x5','x6','x7','x8','x9','x10',]], training_data['k10'])
+ 
+y_val_pred = pipeline.predict(val_data[['x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'x10']])
+y_test_pred = pipeline.predict(test_data[['x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'x10']])
+ 
+# Calculate metrics for the validation set
+mse_val = mean_squared_error(val_data['k10'], y_val_pred)
+mape_val = mean_absolute_percentage_error(val_data['k10'], y_val_pred)
+ 
+# Calculate metrics for the test set
+mse_test = mean_squared_error(test_data['k10'], y_test_pred)
+mape_test = mean_absolute_percentage_error(test_data['k10'], y_test_pred)
+ 
+print(f"Validation MSE: {mse_val}")
+print(f"Validation MAPE: {mape_val * 100}%")
+print(f"Test MSE: {mse_test}")
+print(f"Test MAPE: {mape_test * 100}%")
